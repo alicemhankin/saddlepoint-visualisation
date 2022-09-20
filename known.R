@@ -11,7 +11,7 @@ options(shiny.useragg = TRUE)
 ###################################################################################################################################################################
 # This application was written by Alice Hankin, adapted from code by Jesse Goodman and Rachel Fewster                                                             #
 # More information about this app, along with my thesis about this project can be found at https://github.com/alicemhankin/saddlepoint-visualisation              #
-# A quick-start guide can be found at https://rawcdn.githack.com/alicemhankin/saddlepoint-visualisation/14a3f9642eb9b8ee81dc3aad20fd73fecdc8222f/user-guide.html  #
+# A quick-start guide can be found at https://rawcdn.githack.com/alicemhankin/saddlepoint-visualisation/aea92eaa97c02e3356f418d9fed2572e868beb6d/user-guide.html  #
 ###################################################################################################################################################################
 
 
@@ -730,8 +730,8 @@ server <- function(input, output, session) {
     title = "Have you read the start guide?", 
     footer = modalButton("I already know what I'm doing"),
     easyClose=T,
-    tagList(a("Click here to learn about how this application works", target="_blank", 
-              href="https://rawcdn.githack.com/alicemhankin/saddlepoint-visualisation/14a3f9642eb9b8ee81dc3aad20fd73fecdc8222f/user-guide.html"))
+    tagList(a("Click here to learn about to use this application", target="_blank", 
+              href="https://rawcdn.githack.com/alicemhankin/saddlepoint-visualisation/aea92eaa97c02e3356f418d9fed2572e868beb6d/user-guide.html"))
     
   )
   
