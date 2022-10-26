@@ -727,7 +727,7 @@ server <- function(input, output, session) {
     footer = modalButton("I already know what I'm doing"),
     easyClose=T,
     tagList(a("Click here to learn about to use this application", target="_blank", 
-              href="https://rawcdn.githack.com/alicemhankin/saddlepoint-visualisation/7b5e8a1d666ca14ff34b1a257f598f53b8fd7973/user-guide.html"))
+              href="https://raw.githack.com/alicemhankin/saddlepoint-visualisation/main/user-guide.html"))
     
   )
   
