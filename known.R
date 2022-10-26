@@ -8,28 +8,27 @@ options(shiny.useragg = TRUE)
 
 
 
-###################################################################################################################################################################
-# This application was written by Alice Hankin, adapted from code by Jesse Goodman and Rachel Fewster                                                             #
-# More information about this app, along with my thesis about this project can be found at https://github.com/alicemhankin/saddlepoint-visualisation              #
-# A quick-start guide can be found at https://rawcdn.githack.com/alicemhankin/saddlepoint-visualisation/aea92eaa97c02e3356f418d9fed2572e868beb6d/user-guide.html  #
-###################################################################################################################################################################
+#############################################################################################################################################################
+# This application was written by Alice Hankin, adapted from code by Jesse Goodman and Rachel Fewster                                                       #
+# More information about this app, along with my thesis about this project can be found at https://github.com/alicemhankin/saddlepoint-visualisation        #
+# A start guide can be found at https://raw.githack.com/alicemhankin/saddlepoint-visualisation/main/user-guide.html                                         #
+#############################################################################################################################################################
 
 
 
 
 #function returns info pertaining to the selected distribution
 distfunc = function(distrString, min_x, max_s){
-  
 
   names = c("ddist", "rdist", "m", "firstminmax", "secondminmax", "step", "max_s", "slidernames", 
             "scalex", "discrete", "condition", "min_x")
   mylist <- sapply(names,function(x) NULL)
   
-  #IN ORDER:
+  #The members of mylist are (in order):
   #true distribution,  initial sampling distribution,  moment generating function,
   #minimum/maximum of first parameter, minimum/maximum of second parameter,  step size for parameters, 
   #maximum value s can take, names of parameter sliders, values from rdist adapted for chosen parameters,
-  #is sampling distribution discrete, are there two parameters?,  minimum value of x
+  #is sampling distribution discrete?, are there two parameters?,  minimum value of x
   
   #note that the initially sampled points from rdist are fixed (until we resample or change distribution)
   #but scalex describes how to adapt these values so that they follow the correct distribution with the correct 
@@ -347,7 +346,7 @@ server <- function(input, output, session) {
   #gets all information about selected distribution
   distlist = reactive(distfunc(input$distrString, req(minmax_x()[1]), req(minmax_s()[2])))
 
-  # updates x values, y values, and sampling distribution
+  #updates x values, y values, and sampling distribution
   observeEvent(list(input$applydistr,input$distrString),{
     distr(distlist()$rdist)
     y(c())
@@ -358,7 +357,7 @@ server <- function(input, output, session) {
                            distr)
   })
   
-  #updates mgf when the normalising toggle is toggles
+  #updates mgf when the normalising toggle is toggled
   normalising <- reactiveVal()
   observeEvent(input$togglenormalising, {
     normalising(function(s){distlist()$m(s, input$var1, input$var2)})
@@ -426,8 +425,8 @@ server <- function(input, output, session) {
   })
   
   #defines values that are needed several times in plots, so they don't have to be run multiple times
-  s = reactive({seq(req(minmax()$min_s),req(minmax()$max_s),by=0.05)})
-  xvals = reactive(seq(input$xlim[1],input$xlim[2],by=0.2))
+  s = reactive({seq(req(minmax()$min_s),req(minmax()$max_s),by=0.01)})
+  xvals = reactive(seq(input$xlim[1],input$xlim[2],by=0.01))
   ddist = reactive(function(x) distlist()$ddist(x, input$var1, input$var2))
   ddist_x = reactive(ddist()(xvals()))
   cgfs_input_s = reactive(cgfs()(input$s))
@@ -487,7 +486,7 @@ server <- function(input, output, session) {
     log = ifelse(input$togglelog == TRUE, "y", "")
     
     #draws plot axes
-    par(mar=c(2, 2, 2.3, 4))
+    par(mar=c(2, 2, 1, 4))
     plot(1,1,ylab="", xlab="x",
          xlim = input$xlim, main="", type='l', log=log,
          ylim = c(max(0.00001,input$ylim2[1]), input$ylim2[2]))
@@ -499,17 +498,14 @@ server <- function(input, output, session) {
         tryCatch(mtext(paste("K'(s) = ", round(input$x,2)), side=3, at = input$x), error=function(e){})
         hval = tryCatch(exp(cgfs()(k_prime_inverse()(input$x))$k - k_prime_inverse()(input$x) * input$x) /
                           suppressWarnings(sqrt(2*pi*cgfs()(k_prime_inverse()(input$x))$k_dblprime)), error=function(e){})
-        abline(h=hval,col=cols[4])
-        tryCatch(mtext(TeX(sprintf(r'($\frac{e^{K(s)-sx}}{\sqrt{2 \pi K''(s)}} = %f$)', round(hval,2))),
-                       at=min(hval, input$ylim2[2]), side=4, padj=1), error=function(e){})
       }else{
         abline(v = cgfs_input_s()$k_prime, col=cols[4])
         tryCatch(mtext(paste("K'(s) = ", round(cgfs_input_s()$k_prime,2)), side=3, at = cgfs_input_s()$k_prime), error=function(e){})
         hval = exp(cgfs_input_s()$k - input$s * cgfs_input_s()$k_prime) / suppressWarnings(sqrt(2*pi*cgfs_input_s()$k_dblprime))
-        abline(h=hval,col=cols[4])
-        tryCatch(mtext(TeX(sprintf(r'($\frac{e^{K(s)-sx}}{\sqrt{2 \pi K''(s)}} = %f$)', round(hval,2))),
-                       at=min(hval, input$ylim2[2]), side=4, padj=1), error=function(e){})
       }
+      abline(h=hval,col=cols[4])
+      tryCatch(mtext(TeX(sprintf(r'($\frac{e^{K(s)-sx}}{\sqrt{2 \pi K''(s)}} = %f$)', round(hval,2))),
+                     at=min(hval, 0.8*input$ylim2[2]), side=4, padj=1), error=function(e){})
     }
     
     #true distribution
@@ -549,7 +545,7 @@ server <- function(input, output, session) {
     lwd=if(input$togglecol) c(2,4) else c(1, 2)
     
     #initializes plot
-    par(mar=c(2, 2, 2.3, 4))
+    par(mar=c(2, 2, 1, 4))
     plot(1,1, col=cols[1], xlim=input$xlim, type='l',
          ylim = c(max(0.00001,input$ylim2[1]), input$ylim2[2]), log=log, ylab="", xlab="x")
     
@@ -576,7 +572,7 @@ server <- function(input, output, session) {
       abline(h = const, col=cols[4], lwd=1)
       mtext(paste("K'(s) = ", round(kp,2)), side=3, at = kp)
       mtext(TeX(sprintf(r'($\frac{1}{\sqrt{2\pi K''(s)}} =  %f$)', round(const,2))),
-            at = min(const, input$ylim2[2]), side=4, padj=1)
+            at = min(const, 0.8*input$ylim2[2]), side=4, padj=1)
     }
     
     # mean tilted and mean normal distributions for all s
@@ -731,7 +727,7 @@ server <- function(input, output, session) {
     footer = modalButton("I already know what I'm doing"),
     easyClose=T,
     tagList(a("Click here to learn about to use this application", target="_blank", 
-              href="https://rawcdn.githack.com/alicemhankin/saddlepoint-visualisation/aea92eaa97c02e3356f418d9fed2572e868beb6d/user-guide.html"))
+              href="https://rawcdn.githack.com/alicemhankin/saddlepoint-visualisation/7b5e8a1d666ca14ff34b1a257f598f53b8fd7973/user-guide.html"))
     
   )
   
