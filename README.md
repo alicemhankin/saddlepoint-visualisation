@@ -1,6 +1,6 @@
 Here are all the files related to my master's dissertation - "visualising the saddlepoint approximation". I was awarded an A+ for this project :)
 
-- **report.pdf** - my final complete dissertation. View as a pdf [here](https://rawcdn.githack.com/alicemhankin/saddlepoint-visualisation/d2d1748972e839cdc024930351bc1948275e0307/report.pdf). This contains all sorts of interesting content about exponential tilting, Poisson processes, effective data visualisation, and R Shiny as well as the saddlepoint approximation.
+- **report.pdf** - my final complete dissertation; view as a pdf [here](https://rawcdn.githack.com/alicemhankin/saddlepoint-visualisation/d2d1748972e839cdc024930351bc1948275e0307/report.pdf). This contains all sorts of interesting content about exponential tilting, Poisson processes, effective data visualisation, and R Shiny as well as the saddlepoint approximation.
 
 - **slideshow.pdf** - a slideshow to accomany a 15-minute talk overviewing the project.
 
